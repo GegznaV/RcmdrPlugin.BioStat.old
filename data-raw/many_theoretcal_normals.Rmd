@@ -1,0 +1,338 @@
+---
+title: "Untitled"
+author: "Vilmantas Gėgžna"
+date: "November 4, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+```
+
+```{r data}
+# create some data
+set.seed(123)
+df1 <- data.frame(vals = exp(rnorm(1000, 10)),
+                  y = sample(LETTERS[1:3], 1000, replace = TRUE),
+                  z = sample(letters[1:3], 1000, replace = TRUE))
+```
+
+```{r}
+#* Henrik's plyr version
+library(plyr)
+df2 <- plyr::ddply(.data = df1, .variables = .(y, z), function(dat){
+             q <- qqnorm(dat$vals, plot = FALSE)
+             dat$xq <- q$x
+             dat
+}
+)
+```
+
+
+
+```{r}
+#* The dplyr version
+# Function, that prepares data
+ 
+library(dplyr)
+
+qqnorm_data <- function(x){
+  Q <- as.data.frame(qqnorm(x, plot = FALSE))
+  names(Q) <- c("xq", substitute(x))
+  Q
+}
+
+df3 <- df1 %>%
+  group_by(y, z) %>%
+  do(with(., qqnorm_data(vals)))
+
+```
+
+```{r}
+ggplot(data = df3, aes(x = xq, y = vals)) +
+  geom_point() +
+  # geom_smooth(method = "lm", se = FALSE) +
+  # geom_abline(slope = 1, intercept = 0 )+
+  xlab("Theoretical") +
+  ylab("Sample") +
+  facet_grid(y ~ z,scales = "free")
+```
+
+
+
+```{r}
+#* The dplyr version
+# Function, that prepares data
+ 
+
+library(dplyr)
+
+dnorm_data <- function(x){
+  xx <- seq(min(x), max(x), length.out = 100) 
+  data.frame(
+      qx = xx,
+      qy = dnorm(xx,
+                mean = mean(x),
+                sd = sd(x)
+                ),
+      Data = rep_len("Theoretical",length(xx))
+ )
+}
+
+df4 <- df1 %>%
+  group_by(y, z) %>%
+  do(with(., dnorm_data(vals)))
+
+```
+
+
+```{r}
+
+df1$Data <- "Empirical"
+
+ggplot(data = df1, aes(x = vals, color = Data, fill = Data))+
+  geom_density(adjust = 1, alpha = 0.5) +
+  geom_line(data = df4, aes(qx,qy), lwd = 1.5, alpha = 0.7)+
+  # geom_smooth(method = "lm", se = FALSE) +
+  # geom_abline(slope = 1, intercept = 0 )+
+  # xlab("Theoretical") +
+  # ylab("Sample") +
+  facet_grid(y ~ z)
+```
+
+Significance codes
+============================================================================= 
+
+```{r}
+signif_codes <- function(x,
+                         cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1),
+                         symbols = c("***", "**", "*", ".", " ")){
+    # cut(x, cutpoints ,symbols, include.lowest = TRUE)
+    
+    symnum(x,
+           cutpoints = cutpoints, 
+           symbols = symbols,
+           corr = FALSE,
+           na = FALSE)
+}
+
+```
+
+
+
+
+
+```{r}
+
+# b <- with(Piestilg_long,
+#           tapply(ilgiai, ziedo_nr, shapiro.test)
+#           )  %>% 
+#  sapply(.,function(x){round(x$p.value, 3)})
+#  cat("Shapiro-Wilk test: p values\n\n"); b
+
+
+# .df <- Piestilg_long
+.df <- CO2
+
+
+
+x   <- CO2$uptake
+gr  <- CO2$Type
+    
+    
+b <- tapply(x, gr, shapiro.test)  %>% 
+ sapply(.,function(x){round(x$p.value, 3)})
+ cat("Shapiro-Wilk test: p values\n\n"); 
+ data.frame(p = b,"signif." = signif_codes(b))
+
+# simplify2array(a)
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+plot.design(.df)
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+```
+
+```{r}
+library(dplyr)
+df_ <- Piestilg_long
+
+
+df4 <- df_ %>%
+  group_by(ziedo_nr) %>%
+  do(with(., dnorm_data(ilgiai)))
+
+
+df_$Data <- "Empirical"
+
+ggplot(data = df_, aes(x = ilgiai, color = Data, fill = Data))+
+  geom_density(adjust = 1, alpha = 0.5) +
+  geom_line(data = df4, aes(qx,qy), lwd = 1.5, alpha = 0.7)+
+  # geom_smooth(method = "lm", se = FALSE) +
+  # geom_abline(slope = 1, intercept = 0 )+
+  # xlab("Theoretical") +
+  # ylab("Sample") +
+  facet_grid(ziedo_nr ~ .)
+```
+
+
+***
+============================================================================= 
+
+```{r}
+## Read in file 'THANKS'.
+x <- paste(readLines(file.path(R.home("doc"), "THANKS"), n = 50), collapse = "\n")
+## Split into paragraphs and remove the first 4 ones
+x <- unlist(strsplit(x, "\n[ \t\n]*\n"))[-(1:4)]
+## Join the rest
+x <- paste(x, collapse = "\n\n")
+## Now for some fun:
+writeLines(strwrap(x, width = 60));bru()
+writeLines(strwrap(x, width = 60, indent = 5));bru()
+writeLines(strwrap(x, width = 60, exdent = 5));bru()
+```
+
+
+
+
+Dataset
+============================================================================= 
+
+-   `ID`: kiekvieno tiriamojo identifikacinis kodas;
+-   `pokalbis`: pokalbio sudėtingumo lygis;
+-   `vairavimo_salygos` : vairavimo salygos simuliatoriuje;
+-   `klaidu_sk`: vairavimo klaidų skaičius;
+
+```{r , include=F}
+mob <- read.table(text =
+"         ID    pokalbis   vairavimo_salygos klaidu_sk
+1         1         'Nekalbama'      Nesudetingos     20
+2         2         'Nekalbama'      Nesudetingos     19
+3         3         'Nekalbama'      Nesudetingos     31
+4         4         'Nekalbama'      Nesudetingos     27
+5         5         'Nekalbama'      Nesudetingos     31
+6         6         'Nekalbama'      Nesudetingos     17
+7         7         'Nekalbama'      Nesudetingos     23
+8         8         'Nekalbama'      Nesudetingos     26
+9         9         'Nekalbama'      Nesudetingos     11
+10       10         'Nekalbama'      Nesudetingos     15
+11       11         'Nekalbama'      Nesudetingos     13
+12       12         'Nekalbama'      Nesudetingos     18
+13       13         'Nekalbama'      Nesudetingos     21
+14       14         'Nekalbama'      Nesudetingos     13
+15       15         'Nekalbama'      Nesudetingos     13
+16       16         'Nekalbama'      Nesudetingos     14
+17       17         'Nekalbama'      Nesudetingos     20
+18       18         'Nekalbama'      Nesudetingos     26
+19       19         'Nekalbama'      Nesudetingos     20
+20       20         'Nekalbama'      Nesudetingos     14
+21       21         'Nekalbama' Sudetingos     10
+22       22         'Nekalbama' Sudetingos     23
+23       23         'Nekalbama' Sudetingos     31
+24       24         'Nekalbama' Sudetingos     32
+25       25         'Nekalbama' Sudetingos     24
+26       26         'Nekalbama' Sudetingos     26
+27       27         'Nekalbama' Sudetingos     46
+28       28         'Nekalbama' Sudetingos     25
+29       29         'Nekalbama' Sudetingos     23
+30       30         'Nekalbama' Sudetingos     25
+31       31         'Nekalbama' Sudetingos     13
+32       32         'Nekalbama' Sudetingos     32
+33       33         'Nekalbama' Sudetingos     32
+34       34         'Nekalbama' Sudetingos     16
+35       35         'Nekalbama' Sudetingos     26
+36       36         'Nekalbama' Sudetingos     24
+37       37         'Nekalbama' Sudetingos     11
+38       38         'Nekalbama' Sudetingos     15
+39       39         'Nekalbama' Sudetingos     19
+40       40         'Nekalbama' Sudetingos     12
+41       41   'Lengvas'      Nesudetingos     21
+42       42   'Lengvas'      Nesudetingos     23
+43       43   'Lengvas'      Nesudetingos      7
+44       44   'Lengvas'      Nesudetingos     25
+45       45   'Lengvas'      Nesudetingos     15
+46       46   'Lengvas'      Nesudetingos     21
+47       47   'Lengvas'      Nesudetingos     19
+48       48   'Lengvas'      Nesudetingos      1
+49       49   'Lengvas'      Nesudetingos     25
+50       50   'Lengvas'      Nesudetingos     20
+51       51   'Lengvas'      Nesudetingos     32
+52       52   'Lengvas'      Nesudetingos     32
+53       53   'Lengvas'      Nesudetingos     14
+54       54   'Lengvas'      Nesudetingos     34
+55       55   'Lengvas'      Nesudetingos     21
+56       56   'Lengvas'      Nesudetingos     13
+57       57   'Lengvas'      Nesudetingos     20
+58       58   'Lengvas'      Nesudetingos     28
+59       59   'Lengvas'      Nesudetingos     10
+60       60   'Lengvas'      Nesudetingos     15
+61       61   'Lengvas' Sudetingos     46
+62       62   'Lengvas' Sudetingos     30
+63       63   'Lengvas' Sudetingos     37
+64       64   'Lengvas' Sudetingos     31
+65       65   'Lengvas' Sudetingos     25
+66       66   'Lengvas' Sudetingos     23
+67       67   'Lengvas' Sudetingos     38
+68       68   'Lengvas' Sudetingos     36
+69       69   'Lengvas' Sudetingos     43
+70       70   'Lengvas' Sudetingos     41
+71       71   'Lengvas' Sudetingos     43
+72       72   'Lengvas' Sudetingos     32
+73       73   'Lengvas' Sudetingos     37
+74       74   'Lengvas' Sudetingos     23
+75       75   'Lengvas' Sudetingos     34
+76       76   'Lengvas' Sudetingos     46
+77       77   'Lengvas' Sudetingos     54
+78       78   'Lengvas' Sudetingos     45
+79       79   'Lengvas' Sudetingos     33
+80       80   'Lengvas' Sudetingos     42
+82       82  'Intensyvus'      Nesudetingos     33
+83       83  'Intensyvus'      Nesudetingos     24
+84       84  'Intensyvus'      Nesudetingos     21
+85       85  'Intensyvus'      Nesudetingos     29
+81       81  'Intensyvus'      Nesudetingos     21
+86       86  'Intensyvus'      Nesudetingos     24
+87       87  'Intensyvus'      Nesudetingos     28
+88       88  'Intensyvus'      Nesudetingos     31
+89       89  'Intensyvus'      Nesudetingos     22
+90       90  'Intensyvus'      Nesudetingos     21
+91       91  'Intensyvus'      Nesudetingos     42
+92       92  'Intensyvus'      Nesudetingos     20
+93       93  'Intensyvus'      Nesudetingos     25
+94       94  'Intensyvus'      Nesudetingos     20
+95       95  'Intensyvus'      Nesudetingos     21
+96       96  'Intensyvus'      Nesudetingos     16
+97       97  'Intensyvus'      Nesudetingos     23
+98       98  'Intensyvus'      Nesudetingos     37
+99       99  'Intensyvus'      Nesudetingos     34
+100     100  'Intensyvus'      Nesudetingos     25
+101     101  'Intensyvus' Sudetingos     46
+102     102  'Intensyvus' Sudetingos     49
+103     103  'Intensyvus' Sudetingos     56
+104     104  'Intensyvus' Sudetingos     41
+105     105  'Intensyvus' Sudetingos     56
+106     106  'Intensyvus' Sudetingos     36
+107     107  'Intensyvus' Sudetingos     46
+108     108  'Intensyvus' Sudetingos     39
+109     109  'Intensyvus' Sudetingos     42
+110     110  'Intensyvus' Sudetingos     56
+111     111  'Intensyvus' Sudetingos     51
+112     112  'Intensyvus' Sudetingos     27
+113     113  'Intensyvus' Sudetingos     45
+114     114  'Intensyvus' Sudetingos     48
+115     115  'Intensyvus' Sudetingos     50
+116     116  'Intensyvus' Sudetingos     61
+117     117  'Intensyvus' Sudetingos     43
+118     118  'Intensyvus' Sudetingos     47
+119     119  'Intensyvus' Sudetingos     54
+120     120  'Intensyvus' Sudetingos     41")
+
+
+save(mob_vair, file = "mob_vair.Rdata")
+
+```
+
+
+
+
+

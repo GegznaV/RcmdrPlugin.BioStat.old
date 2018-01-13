@@ -1,0 +1,59 @@
+# =============================================================================
+# ---- Main plots -------------------------------------------------------------
+
+item	BioStat_menu    cascade	"Plots"	            plots_menu	""	""
+menu	plots_menu	    BioStat_menu	""	""	""	""
+
+item	plots_menu	    command "Open a new window for plots"	  open_new_plots_window	        ""	""
+
+# item	plots_menu	    separator	"Continuous variables"	""	""	""
+# item	plots_menu	    command	    "Normal Q-Q plot (by groups)"	window_qqplot_biostat	"numericP()"	""
+
+
+#   item	plots_menu	    command "Histogram..."	        windowHist	        "nonFactorsP()"	""
+#   item	plots_menu	    command "Density plot..."   	windowDensity	    "nonFactorsP()"	""
+#   item	plots_menu	    command "Box plot / Confidence interval/ Violin plot..."	windowBox	"nonFactorsP()"	""
+
+#   item	plots_menu	    separator	""	""	""	""
+#   item	plots_menu	    command "Scatter plot..."	    windowScatter	    "nonFactorsP(2)"	""
+#   item	plots_menu	    command "Scatter matrix..."	    windowScattermat	"nonFactorsP(3)"	""
+#   item	plots_menu	    command "Line chart..."	        windowLine	        "nonFactorsP(2)"	""
+
+#   item	plots_menu	    separator	"Discrete variables"	""	""	""
+#   item	plots_menu	    command "Pie chart..."	        windowPie	        "factorsP()"	""
+#   item	plots_menu	    command "Bar chart for discrete variables..."	    windowDiscretebar	"factorsP()"	""
+
+#   item	plots_menu	    separator	""	""	""	""
+#   item	plots_menu	    command "Contour plot..."	    windowContour	    "nonFactorsP(3)"	""
+#   item	plots_menu	    separator	""	""	""	""
+#   item	plots_menu	    command "Q-Q plot..."	        windowQQ	        "nonFactorsP()"	""
+#   item	plots_menu	    command "Q-Q plot by group"	    windowQQ	        "nonFactorsP()"	""
+
+
+# ---- Distributions ----------------------------------------------------------
+menu	distr_menu	        BioStat_menu	""	""	""	""
+
+#   item	BioStat_menu	    cascade	"Plot distribution..."	            distr_menu	""	""
+#
+#   menu	c_distr_menu	    distr_menu	""	""	""	""
+#   item	distr_menu	        cascade	"Continuous"	                    c_distr_menu	""	""
+#   item	c_distr_menu	    command	"Normal distribution..."	        windowDistNorm	""	""
+#   item	c_distr_menu	    command	"t distribution..."	                windowDistT	""	""
+#   item	c_distr_menu	    command	"Chi-square distribution..."	    windowDistChisq	""	""
+#   item	c_distr_menu	    command	"F distribution..."	                windowDistF	""	""
+#   item	c_distr_menu	    command	"Exponential distribution..."	    windowDistExp	""	""
+#   item	c_distr_menu	    command	"Uniform distribution..."	        windowDistUnif	""	""
+#   item	c_distr_menu	    command	"Beta distribution..."	            windowDistBeta	""	""
+#   item	c_distr_menu	    command	"Cauchy distribution..."	        windowDistCauchy	""	""
+#   item	c_distr_menu	    command	"Logistic distribution..."	        windowDistLogis	""	""
+#   item	c_distr_menu	    command	"Log-normal distribution..."	    windowDistLnorm	""	""
+#   item	c_distr_menu	    command	"Gamma distribution..."	            windowDistGamma	""	""
+#   item	c_distr_menu	    command	"Weibull distribution..."	        windowDistWeibull	""	""
+#
+#   menu	d_distr_menu	    distr_menu	""	""	""	""
+#   item	distr_menu	        cascade	"Discrete"	                        d_distr_menu	""	""
+#   item	d_distr_menu	    command	"Binomial distribution..."	        windowDistBinom	""	""
+#   item	d_distr_menu	    command	"Poisson distribution..."	        windowDistPois	""	""
+#   item	d_distr_menu	    command	"Geometric distribution..."	        windowDistGeom	""	""
+#   item	d_distr_menu	    command	"Hypergeometric distribution..."	windowDistHyper	""	""
+#   item	d_distr_menu	    command	"Negative binomial distribution..."	windowDistNbinom	""	""

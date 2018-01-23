@@ -13,8 +13,8 @@ summary_glimpse <- function() {
 #' @export
 #' @keywords internal
 summary_head_tail <- function() {
-    Library("BioStat")
-    doItAndPrint(glue::glue("BioStat::head_tail({ActiveDataSet()}, 4)"))
+    Library("BioStat.old")
+    doItAndPrint(glue::glue("BioStat.old::head_tail({ActiveDataSet()}, 4)"))
 }
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -5,7 +5,7 @@
 command_load_packages <- function() {
     Rcmdr::doItAndPrint(paste0(
         "library(tidyverse) \n",
-        "library(BioStat)   \n",
+        "library(BioStat.old)   \n",
         "library(magrittr)  \n"))
 }
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

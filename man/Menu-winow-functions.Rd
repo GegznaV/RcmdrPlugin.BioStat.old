@@ -41,7 +41,7 @@
 \alias{window_qqplot_biostat}
 \alias{window_normality_test}
 \alias{window_tmp}
-\title{RcmdrPlugin.BioStat functions for menus and windows}
+\title{RcmdrPlugin.BioStat.old functions for menus and windows}
 \usage{
 function_not_implemented(x = NULL)
 

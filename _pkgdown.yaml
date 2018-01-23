@@ -6,7 +6,7 @@ template:
 
 
 navbar:
-  title: "RcmdrPlugin.BioStat | R package"
+  title: "RcmdrPlugin.BioStat.old | R package"
   type: default
   left:
   - icon: fa-home fa-lg

@@ -165,7 +165,7 @@ window_do_summary <- function() {
 
         # calculations -------------------------------------------------------
         .activeDataSet <- ActiveDataSet()
-        Library("BioStat")
+        Library("BioStat.old")
 
         if (length(y_var) > 1) {
             y_var <- paste0(y_var, collapse = " + ")

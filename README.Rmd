@@ -38,6 +38,5 @@ if (!"devtools" %in% installed.packages())
 devtools::install_github("GegznaV/RcmdrPlugin.BioStat.old")
 ```
 
-
 ***
 

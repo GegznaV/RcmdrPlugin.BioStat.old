@@ -1,14 +1,14 @@
 #type	menu/item	    operation/parent	label	    command/menu	activation	    install?
 
 # =============================================================================
-item	topMenu	        cascade             "BioStat"	        BioStat_menu	    ""	    ""
-menu	BioStat_menu	topMenu	            ""	        ""	""	""
+item	topMenu	        cascade             "BioStat (old)"	        BioStat.old_menu	    ""	    ""
+menu	BioStat.old_menu	topMenu	            ""	        ""	""	""
 
 # ==============================================================================
 # ---- Manage dataset ---------------------------------------------------------
 
-item	BioStat_menu cascade	    "Data"   data_menu	""	""
-menu	data_menu    BioStat_menu	    ""	""	""	""
+item	BioStat.old_menu cascade	    "Data"   data_menu	""	""
+menu	data_menu    BioStat.old_menu	    ""	""	""	""
 item	data_menu    command      "Refresh active dataset"	command_dataset_refresh  "activeDataSetP()"	""
 item	data_menu    command      "Show dataset's class"	command_dataset_class    "activeDataSetP()"	""
 item	data_menu    command      "Convert to data frame"	command_dataset_as_df	 "activeDataSetP() && !first_class_is_dataframeP()"	""
@@ -34,8 +34,8 @@ item	export_menu  command      "Save as R data object (.Rds)"  window_export_as_
 # ==============================================================================
 # ---- Manage variables ------------------------------------------------------
 
-item	BioStat_menu    cascade	            "Variables"   Variable_menu	""	""
-menu	Variable_menu	BioStat_menu	    ""	""	""	""
+item	BioStat.old_menu    cascade	            "Variables"   Variable_menu	""	""
+menu	Variable_menu	BioStat.old_menu	    ""	""	""	""
 item	Variable_menu   command             "Convert all strings (chr) to factors"	command_all_chr_to_fctr "characterP()"	""
 item	Variable_menu   command             "Log transformation"	                window_log_transform	"numericP()"	""
 item	Variable_menu   command             "Z transformation (standardization)"  	window_z_transform	    "numericP()"	""
@@ -44,8 +44,8 @@ item	Variable_menu   command             "Z transformation (standardization)"  	
 # ==============================================================================
 # ---- Statistical summaries --------------------------------------------------
 
-item	BioStat_menu  cascade	   "Summaries"   Summary_bs	""	""
-menu	Summary_bs	  BioStat_menu	    ""	""	""	""
+item	BioStat.old_menu  cascade	   "Summaries"   Summary_bs	""	""
+menu	Summary_bs	  BioStat.old_menu	    ""	""	""	""
 item	Summary_bs    command      "Structure of data set (glimpse)"	      summary_glimpse	        "activeDataSetP()"	""
 item	Summary_bs    command      "Top and bottom rows of data set"	      summary_head_tail	        "activeDataSetP()"	""
 item	Summary_bs    separator    "" "" "" ""
@@ -57,8 +57,8 @@ item	Summary_bs    command      "Summarize numerical variables by group"   windo
 # =============================================================================
 # ---- Main plots -------------------------------------------------------------
 
-item	BioStat_menu    cascade	     "Plots"	            plots_menu	""	""
-menu	plots_menu	    BioStat_menu ""	""	""	""
+item	BioStat.old_menu    cascade	     "Plots"	            plots_menu	""	""
+menu	plots_menu	    BioStat.old_menu ""	""	""	""
 item	plots_menu	    command      "New window for plots"	  open_new_plots_window	        ""	""
 
 # item	plots_menu	    separator	""	""	""	""
@@ -75,8 +75,8 @@ item	plots_menu	    command      "New window for plots"	  open_new_plots_window	
 # ==============================================================================
 # ---- Statistical tests ------------------------------------------------------
 
-item	BioStat_menu    cascade	        "Tests"   Tests_menu	""	""
-menu	Tests_menu	    BioStat_menu    ""	""	""	""
+item	BioStat.old_menu    cascade	        "Tests"   Tests_menu	""	""
+menu	Tests_menu	    BioStat.old_menu    ""	""	""	""
 item	Tests_menu      command         "Normality tests"	window_normality_test	"numericP()"	""
 # item	Tests_menu	    separator   	""	""	""	""
 # item	Tests_menu      command         "[!] ANOVA, Kruskal-Wallis, Median tests" window_anova_kw_mood_tests	"numericP() & factorsP()"	""
@@ -92,8 +92,8 @@ item	Tests_menu      command         "Normality tests"	window_normality_test	"nu
 # ==============================================================================
 # ---- Confidence intervals ---------------------------------------------------
 
-# item	BioStat_menu    cascade	        "Confidence intervals"   ci_menu	""	""
-# menu	ci_menu	        BioStat_menu    ""	""	""	""
+# item	BioStat.old_menu    cascade	        "Confidence intervals"   ci_menu	""	""
+# menu	ci_menu	        BioStat.old_menu    ""	""	""	""
 # item	ci_menu         command         "[!] Confidence interval for mean"	     window_ci_mean	""	""
 # item	ci_menu         command         "[!] Confidence interval for proportion" window_ci_prop	""	""
 # item	ci_menu         command         "[!] Bootstrap confidence intervals"     window_ci_boot	""	""
@@ -103,8 +103,8 @@ item	Tests_menu      command         "Normality tests"	window_normality_test	"nu
 # ==============================================================================
 # ---- Models -----------------------------------------------------------------
 
-item	BioStat_menu  cascade	   "Models"   models_menu	""	""
-menu	models_menu   BioStat_menu	    ""	""	""	""
+item	BioStat.old_menu  cascade	   "Models"   models_menu	""	""
+menu	models_menu   BioStat.old_menu	    ""	""	""	""
 item	models_menu   command      "Show model's class"	                     command_get_model_class  "activeModelP()"	   ""
 item	models_menu   command      "Print model (basic results)"             command_model_print      "activeModelP()"	   ""
 item	models_menu   command      "Standardized regression coefficients"	 command_std_lm_coeffs    "modelClassP('lm')"  ""
@@ -113,8 +113,8 @@ item	models_menu   command      "Standardized regression coefficients"	 command_
 # ==============================================================================
 # ---- Settings ---------------------------------------------------------------
 
-item	BioStat_menu    cascade	     "Settings"   settings_menu	""	""
-menu	settings_menu   BioStat_menu	    ""	""	""	""
+item	BioStat.old_menu    cascade	     "Settings"   settings_menu	""	""
+menu	settings_menu   BioStat.old_menu	    ""	""	""	""
 item	settings_menu   command      "Show working directory"	 command_getwd          ""	""
 item	settings_menu	separator    ""	""	""	""
 item	settings_menu   command      "Show current locale"	     command_get_locale     ""	""

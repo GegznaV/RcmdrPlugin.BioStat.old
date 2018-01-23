@@ -26,8 +26,6 @@ An *R Commander* Plugin for Basic (Bio)Statistical Routines *(old version)*
 
 **The development of this package is discontinued. Consider using `RcmdrPlugin.biostat` instead**
 
-The package `RcmdrPlugin.BioStat.old` is still in its development sate and some functions and menus are not fully functional yet. 
-
 
 ## Install the package
 
